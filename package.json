@@ -29,9 +29,13 @@
     "build": "tsup --dts --outDir build --splitting false --sourcemap --clean ./src/index.ts",
     "test": "vitest run",
     "lint": "eslint --max-warnings 0 --ext .ts,.tsx .",
-    "format": "prettier -w './**/*.{ts,tsx,js,json,css}' --check"
+    "format": "prettier -w './**/*.{ts,tsx,js,json,css}' --check",
+    "changeset": "changeset",
+    "version": "npm run format && npm run lint && changeset version",
+    "publish": "changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.5",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
     "eslint": "^8.57.0",
     "prettier": "^3.3.1",
