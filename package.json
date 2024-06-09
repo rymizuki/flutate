@@ -1,6 +1,6 @@
 {
   "name": "flutate",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "mizuki_r <ry.mizuki@gmail.com>",
   "license": "MIT",
   "description": "A TypeScript library, that aggregates record changes, into a single stream.",
