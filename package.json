@@ -1,0 +1,47 @@
+{
+  "name": "flutate",
+  "version": "0.0.0",
+  "author": "mizuki_r <ry.mizuki@gmail.com>",
+  "license": "MIT",
+  "description": "A TypeScript library, that aggregates record changes, into a single stream.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rymizuki/flutate-js.git"
+  },
+  "homepage": "https://github.com/rymizuki/flutate",
+  "bugs": {
+    "url": "https://github.com/rymizuki/flutate/issues"
+  },
+  "keywords": [
+    "flutate"
+  ],
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "./build/index.d.ts",
+    "./build/index.js",
+    "./build/index.js.map"
+  ],
+  "scripts": {
+    "build": "tsup --dts --outDir build --splitting false --sourcemap --clean ./src/index.ts",
+    "test": "vitest run",
+    "lint": "eslint --max-warnings 0 --ext .ts,.tsx .",
+    "format": "prettier -w './**/*.{ts,tsx,js,json,css}' --check"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.12.0",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.1",
+    "tsup": "^8.1.0",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "dependencies": {
+    "just-clone": "^6.2.0",
+    "just-safe-get": "^4.2.0",
+    "just-safe-set": "^4.2.1"
+  }
+}
