@@ -17,7 +17,10 @@ class Collection<T> implements CollectionPort<T> {
     const index = this.findIndex(condition)
     if (!this.isExists(index)) return this
 
-    const next = mutation(this.createRecord(this.rows[index]))
+    const item = this.rows[index]
+    if (item === undefined) return this
+
+    const next = mutation(this.createRecord(item))
     this.rows[index] = next.done()
 
     return this
@@ -48,10 +51,12 @@ class Collection<T> implements CollectionPort<T> {
     if (direction === 'forward') {
       if (index === 0) return this
       const [item] = this.rows.splice(index, 1)
+      if (!item) return this
       this.rows.splice(index - 1, 0, item)
     } else {
       if (index === this.rows.length - 1) return this
       const [item] = this.rows.splice(index, 1)
+      if (!item) return this
       this.rows.splice(index + 1, 0, item)
     }
 
