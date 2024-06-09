@@ -5,29 +5,29 @@ module.exports = {
   root: true,
   env: {
     es6: true,
-    node: true
+    node: true,
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 2023,
     project: ['./tsconfig.json'],
-    tsconfigRootDir: __dirname
+    tsconfigRootDir: __dirname,
   },
   plugins: ['@typescript-eslint'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking'
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   ignorePatterns: ['.eslintrc.js', 'build', 'tsup.config.ts'],
   rules: {
-    '@typescript-eslint/no-unsafe-argument': 'off'
+    '@typescript-eslint/no-unsafe-argument': 'off',
   },
   overrides: [
     {
       files: ['**/*.{spec,test}.{ts,tsx}'],
-      env: {}
-    }
-  ]
+      env: {},
+    },
+  ],
 }
