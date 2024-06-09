@@ -29,20 +29,29 @@ class FlutateRecord<R> implements RecordPort<R> {
       F[N]
     >,
   >(name: N, input: V) {
-    const path = name.toString()
-
-    const prev = get(this.record as object, path)
+    const prev = this.get<F, N>(name)
     const value =
       typeof input === 'function' && Array.isArray(prev)
         ? input(this.createCollection(prev)).done()
         : input
 
-    set(this.record as object, path, value)
+    set(this.record as object, name.toString(), value)
     return this
   }
 
   done() {
     return this.record
+  }
+
+  get<
+    F extends Flatten<R>,
+    N extends keyof F,
+    V extends F[N] | MutateCollection<CastoffArray<F[N]>> = IsArray<
+      F[N] | MutateCollection<CastoffArray<F[N]>>,
+      F[N]
+    >,
+  >(path: N): V {
+    return get(this.record as object, path.toString())
   }
 
   private createCollection<T>(rows: T[]) {

@@ -19,7 +19,7 @@ const newState = flutate(state)
   .clone()
   .update('prop.name', 'new value')
   .update('prop.rows', (rows) => rows.add(item))
-  .update('prop.rows', (rows) => rows.replace({ id: '123'}, newItem))
+  .update('prop.rows', (rows) => rows.replace({ id: '123' }, newItem))
   .update('prop.rows', (rows) =>
     rows.at({ id: '123' }, (row) => row.update('note', 'new note value'))
   )
@@ -40,7 +40,6 @@ Update specified parameter.
 
 The path can specify the hierarchy of the object by separating them with dots.
 
-
 ```ts
 flutate({
   value1: 'example_1',
@@ -57,11 +56,10 @@ For array manipulation.
 ```ts
 flutate({
   values: [
-    { id: 1, value: 'item_1'},
-    { id: 2, value: 'item_2'},
+    { id: 1, value: 'item_1' },
+    { id: 2, value: 'item_2' }
   ]
-})
-  .update('values', (items) => items.add({id: 3, value: 'item_3'}))
+}).update('values', (items) => items.add({ id: 3, value: 'item_3' }))
 ```
 
 #### .clone()
@@ -70,6 +68,19 @@ Deep copy record value, and return new instance.
 
 ```ts
 const newRecord = record.clone()
+```
+
+#### .get(path)
+
+Get value from record, by dot's path.
+
+```ts
+const value = flutate({
+  path: {
+    to: 'example'
+  }
+}).get('path.to')
+// return "example"
 ```
 
 #### .done()
@@ -127,7 +138,7 @@ collection.remove({ id: 1 })
 Replace item in collection.
 
 ```ts
-collection.replace({ id: 1 }, { id: 1, value: 'new value'})
+collection.replace({ id: 1 }, { id: 1, value: 'new value' })
 ```
 
 #### .move(condition, direction)
@@ -138,9 +149,7 @@ If you specify "forward" as the direction, the element will move forward.
 If you specify "backward", the element will move backward.
 
 ```ts
-collection
-  .move({ id: 1 }, 'forward')
-  .move({ id: 1}, 'backward')
+collection.move({ id: 1 }, 'forward').move({ id: 1 }, 'backward')
 ```
 
 #### .at(condition, recordMutation)

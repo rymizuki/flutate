@@ -45,6 +45,26 @@ interface RecordPort<T, F extends Flatten<T> = Flatten<T>> {
    * Returns processed record value.
    */
   done(): T
+
+  /**
+   * Get value from record by dot's path
+   *
+   * @example
+   * ```
+   * const value = record.get('path.to')
+   * ```
+   *
+   * @param path
+   */
+  get<
+    N extends keyof F,
+    V extends F[N] | MutateCollection<CastoffArray<F[N]>> = IsArray<
+      F[N] | MutateCollection<CastoffArray<F[N]>>,
+      F[N]
+    >,
+  >(
+    path: N,
+  ): V
 }
 
 interface RecordFunctionPort {

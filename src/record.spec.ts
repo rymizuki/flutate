@@ -131,4 +131,20 @@ describe('FlutateRecord', () => {
       })
     })
   })
+
+  describe('.get(path)', () => {
+    describe('by default', () => {
+      it('should be return value', () => {
+        expect(record.get('objectValue.value')).toBe(source.objectValue.value)
+      })
+    })
+    describe('by updated', () => {
+      beforeEach(() => {
+        record.update('objectValue.value', 'new value')
+      })
+      it('should be updated value', () => {
+        expect(record.get('objectValue.value')).toBe('new value')
+      })
+    })
+  })
 })
