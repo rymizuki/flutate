@@ -5,6 +5,7 @@ import set from 'just-safe-set'
 import { Collection } from './collection'
 import {
   CastoffArray,
+  CollectionPort,
   Flatten,
   IsArray,
   MutateCollection,
@@ -24,18 +25,20 @@ class FlutateRecord<R> implements RecordPort<R> {
   update<
     F extends Flatten<R>,
     N extends keyof F,
-    V extends F[N] | MutateCollection<CastoffArray<F[N]>> = IsArray<
-      F[N] | MutateCollection<CastoffArray<F[N]>>,
-      F[N]
-    >,
+    V extends
+      | F[N]
+      | IsArray<F[N], MutateCollection<CastoffArray<F[N]>>, F[N]> =
+      | F[N]
+      | IsArray<F[N], MutateCollection<CastoffArray<F[N]>>, F[N]>,
   >(name: N, input: V) {
-    const prev = this.get<F, N>(name)
+    const path = name.toString()
+    const prev = get(this.record as object, path)
     const value =
       typeof input === 'function' && Array.isArray(prev)
         ? input(this.createCollection(prev)).done()
         : input
 
-    set(this.record as object, name.toString(), value)
+    set(this.record as object, path, value)
     return this
   }
 
@@ -46,12 +49,14 @@ class FlutateRecord<R> implements RecordPort<R> {
   get<
     F extends Flatten<R>,
     N extends keyof F,
-    V extends F[N] | MutateCollection<CastoffArray<F[N]>> = IsArray<
-      F[N] | MutateCollection<CastoffArray<F[N]>>,
+    V extends IsArray<F[N], CollectionPort<CastoffArray<F[N]>>, F[N]> = IsArray<
+      F[N],
+      CollectionPort<CastoffArray<F[N]>>,
       F[N]
     >,
   >(path: N): V {
-    return get(this.record as object, path.toString())
+    const value = get(this.record as object, path.toString())
+    return Array.isArray(value) ? this.createCollection(value) : value
   }
 
   private createCollection<T>(rows: T[]) {

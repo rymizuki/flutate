@@ -32,10 +32,9 @@ interface RecordPort<T, F extends Flatten<T> = Flatten<T>> {
    */
   update<
     N extends keyof F,
-    V extends F[N] | MutateCollection<CastoffArray<F[N]>> = IsArray<
-      F[N] | MutateCollection<CastoffArray<F[N]>>,
-      F[N]
-    >,
+    V extends F[N] | IsArray<F[N], MutateCollection<CastoffArray<F[N]>>> =
+      | F[N]
+      | IsArray<F[N], MutateCollection<CastoffArray<F[N]>>, F[N]>,
   >(
     path: N,
     value: V,
@@ -51,17 +50,27 @@ interface RecordPort<T, F extends Flatten<T> = Flatten<T>> {
    *
    * @example
    * ```
-   * const value = record.get('path.to')
+   * const record = flutate({
+   *   value: 'example',
+   *   obj: {
+   *      value: 'example',
+   *   },
+   *   ary: [{ id: 1, value: 'example_1' }]
+   * })
+   *
+   * console.log(record.get('value')) // "example"
+   * console.log(record.get('obj.value')) // "example"
+   * console.log(record.get('ary')) // collection instance
+   *
+   * // finding in array element
+   * const item = record.get('ary').find({ id: 1 }).done() // { id: 1, value: 'example_1' }
    * ```
    *
    * @param path
    */
   get<
     N extends keyof F,
-    V extends F[N] | MutateCollection<CastoffArray<F[N]>> = IsArray<
-      F[N] | MutateCollection<CastoffArray<F[N]>>,
-      F[N]
-    >,
+    V extends IsArray<F[N], CollectionPort<CastoffArray<F[N]>>, F[N]>,
   >(
     path: N,
   ): V
@@ -188,9 +197,9 @@ type MutateCollection<T> = (collection: CollectionPort<T>) => CollectionPort<T>
 type MutateRecord<T> = (record: RecordPort<T>) => RecordPort<T>
 
 export type {
-  RecordPort,
-  RecordFunctionPort,
   CollectionPort,
   MutateCollection,
   MutateRecord,
+  RecordFunctionPort,
+  RecordPort,
 }

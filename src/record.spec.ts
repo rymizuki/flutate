@@ -1,5 +1,6 @@
 import { Mock, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { Collection } from './collection'
 import { FlutateRecord } from './record'
 import { CollectionPort, RecordPort } from './types'
 
@@ -133,17 +134,29 @@ describe('FlutateRecord', () => {
   })
 
   describe('.get(path)', () => {
-    describe('by default', () => {
-      it('should be return value', () => {
-        expect(record.get('objectValue.value')).toBe(source.objectValue.value)
+    describe('when return value is collection', () => {
+      let output: CollectionPort<Item['arrayValue'][number]>
+      beforeEach(() => {
+        output = record.get('arrayValue')
+      })
+
+      it('should be return Collection', () => {
+        expect(output).toBeInstanceOf(Collection)
       })
     })
-    describe('by updated', () => {
-      beforeEach(() => {
-        record.update('objectValue.value', 'new value')
+    describe('when return value is not collection | record', () => {
+      describe('by default', () => {
+        it('should be return value', () => {
+          expect(record.get('objectValue.value')).toBe(source.objectValue.value)
+        })
       })
-      it('should be updated value', () => {
-        expect(record.get('objectValue.value')).toBe('new value')
+      describe('by updated', () => {
+        beforeEach(() => {
+          record.update('objectValue.value', 'new value')
+        })
+        it('should be updated value', () => {
+          expect(record.get('objectValue.value')).toBe('new value')
+        })
       })
     })
   })
