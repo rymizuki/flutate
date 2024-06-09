@@ -1,5 +1,11 @@
 # flutate
 
+## 0.0.5
+
+### Patch Changes
+
+- support collection by record.get
+
 ## 0.0.4
 
 ### Patch Changes
