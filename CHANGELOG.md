@@ -1,5 +1,11 @@
 # flutate
 
+## 0.0.6
+
+### Patch Changes
+
+- add feature collection.find
+
 ## 0.0.5
 
 ### Patch Changes
