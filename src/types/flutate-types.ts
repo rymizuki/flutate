@@ -1,4 +1,4 @@
-import { Flatten, IsArray } from './flatten-record-types'
+import { Flatten, IsArray, IsObject } from './flatten-record-types'
 import { CastoffArray } from './util-types'
 
 /**
@@ -191,6 +191,31 @@ interface CollectionPort<T> {
    * Returns processed array.
    */
   done(): T[]
+
+  /**
+   * Find collection element, by index
+   * If the return value is object, return a RecordPort instance.
+   * If not found element, return undefined.
+   *
+   * @param index
+   */
+  find<V extends IsObject<T, RecordPort<T>, T>>(index: number): V | undefined
+
+  /**
+   * Find collection element, by condition
+   * If the return value is object, return a RecordPort instance.
+   * If not found element, return undefined.
+   *
+   * @example
+   * ```
+   * const element = collection.find({ id: 1 })
+   * ```
+   *
+   * @param condition
+   */
+  find<V extends IsObject<T, RecordPort<T>, T>>(
+    condition: Partial<T>,
+  ): V | undefined
 }
 
 type MutateCollection<T> = (collection: CollectionPort<T>) => CollectionPort<T>

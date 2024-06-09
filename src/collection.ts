@@ -69,16 +69,23 @@ class Collection<T> implements CollectionPort<T> {
     return true
   }
 
+  done() {
+    return this.rows
+  }
+
+  find(condition: ConditionType<T>) {
+    const index = this.findIndex(condition)
+    const value = this.rows[index]
+    if (value === undefined) return
+    return typeof value === 'object' ? this.createRecord(value) : value
+  }
+
   private findIndex(condition: ConditionType<T>) {
     const index =
       typeof condition === 'number'
         ? condition
         : this.rows.findIndex((row) => isMatch(row, condition))
     return index
-  }
-
-  done() {
-    return this.rows
   }
 }
 

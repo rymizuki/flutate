@@ -421,6 +421,39 @@ describe('FlutateCollection', () => {
       })
     })
   })
+
+  describe('.find(index)', () => {
+    beforeEach(() => {
+      collection = createCollection([
+        { id: 'id_1', name: 'test_1' },
+        { id: 'id_2', name: 'test_2' },
+        { id: 'id_3', name: 'test_3' },
+      ])
+    })
+
+    describe('when return value is object', () => {
+      describe('and found item', () => {
+        let output: unknown
+        beforeEach(() => {
+          output = collection.find(1)
+        })
+        it('should be return Record instance', () => {
+          expect(output).toBeInstanceOf(FlutateRecord)
+        })
+        it('should be expected item', () => {
+          expect((output as RecordPort<Item>).done()).toStrictEqual({
+            id: 'id_2',
+            name: 'test_2',
+          })
+        })
+      })
+      describe('and not found item', () => {
+        it('should be return undefined', () => {
+          expect(collection.find(999)).toBeUndefined()
+        })
+      })
+    })
+  })
 })
 
 function createCollection<T>(rows: T[]) {

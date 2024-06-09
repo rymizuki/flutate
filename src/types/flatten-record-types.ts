@@ -39,4 +39,4 @@ type FlattenOneLevel<T> = FlattenStepTwo<FlattenStepOne<T>>
 // {a: {b: 1, c: {d: 1}}} => {"a.b": 1, "a.b.c.d": 1}
 type Flatten<T> = T extends FlattenOneLevel<T> ? T : Flatten<FlattenOneLevel<T>>
 
-export type { Flatten, IsArray }
+export type { Flatten, IsArray, IsObject }
