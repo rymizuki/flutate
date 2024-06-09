@@ -1,5 +1,11 @@
 # flutate
 
+## 0.0.4
+
+### Patch Changes
+
+- add recrod.get feature
+
 ## 0.0.3
 
 ### Patch Changes
