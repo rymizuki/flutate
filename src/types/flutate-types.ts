@@ -32,9 +32,19 @@ interface RecordPort<T, F extends Flatten<T> = Flatten<T>> {
    */
   update<
     N extends keyof F,
-    V extends F[N] | IsArray<F[N], MutateCollection<CastoffArray<F[N]>>> =
+    V extends
       | F[N]
-      | IsArray<F[N], MutateCollection<CastoffArray<F[N]>>, F[N]>,
+      | IsArray<
+          F[N],
+          MutateCollection<CastoffArray<F[N]>>,
+          RecordMutateFunction<T, F[N]>
+        > =
+      | F[N]
+      | IsArray<
+          F[N],
+          MutateCollection<CastoffArray<F[N]>>,
+          RecordMutateFunction<T, F[N]>
+        >,
   >(
     path: N,
     value: V,
@@ -220,6 +230,7 @@ interface CollectionPort<T> {
 
 type MutateCollection<T> = (collection: CollectionPort<T>) => CollectionPort<T>
 type MutateRecord<T> = (record: RecordPort<T>) => RecordPort<T>
+type RecordMutateFunction<T, V> = (prev: RecordPort<T>) => V
 
 export type {
   CollectionPort,
@@ -227,4 +238,5 @@ export type {
   MutateRecord,
   RecordFunctionPort,
   RecordPort,
+  RecordMutateFunction,
 }

@@ -9,6 +9,7 @@ import {
   Flatten,
   IsArray,
   MutateCollection,
+  RecordMutateFunction,
   RecordPort,
 } from './types'
 
@@ -27,16 +28,29 @@ class FlutateRecord<R> implements RecordPort<R> {
     N extends keyof F,
     V extends
       | F[N]
-      | IsArray<F[N], MutateCollection<CastoffArray<F[N]>>, F[N]> =
+      | IsArray<
+          F[N],
+          MutateCollection<CastoffArray<F[N]>>,
+          RecordMutateFunction<R, F[N]>
+        > =
       | F[N]
-      | IsArray<F[N], MutateCollection<CastoffArray<F[N]>>, F[N]>,
+      | IsArray<
+          F[N],
+          MutateCollection<CastoffArray<F[N]>>,
+          RecordMutateFunction<R, F[N]>
+        >,
   >(name: N, input: V) {
     const path = name.toString()
     const prev = get(this.record as object, path)
-    const value =
-      typeof input === 'function' && Array.isArray(prev)
-        ? input(this.createCollection(prev)).done()
-        : input
+    const value = (() => {
+      if (typeof input === 'function') {
+        if (Array.isArray(prev)) {
+          return input(this.createCollection(prev)).done()
+        }
+        return input(this)
+      }
+      return input
+    })()
 
     set(this.record as object, path, value)
     return this

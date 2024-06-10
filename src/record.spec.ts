@@ -102,6 +102,24 @@ describe('FlutateRecord', () => {
       ])
     })
   })
+  describe('.update(path, (prev) => /** some value */)', () => {
+    let mutation: Mock
+
+    beforeEach(() => {
+      mutation = vi.fn(() => 'new value')
+      output = record.update('objectValue.value', mutation).done()
+    })
+
+    it('should be call mutation once', () => {
+      expect(mutation).toHaveBeenCalledOnce()
+    })
+    it('should be call mutation with Record', () => {
+      expect(mutation).toBeCalledWith(record)
+    })
+    it("should be mutate by mutation's return value", () => {
+      expect(output.objectValue.value).toStrictEqual('new value')
+    })
+  })
 
   describe('.clone', () => {
     describe('when update cloned record', () => {
