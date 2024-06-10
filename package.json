@@ -38,14 +38,12 @@
     "@changesets/cli": "^2.27.5",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
     "eslint": "^8.57.0",
+    "just-clone": "^6.2.0",
+    "just-safe-get": "^4.2.0",
+    "just-safe-set": "^4.2.1",
     "prettier": "^3.3.1",
     "tsup": "^8.1.0",
     "typescript": "^5.4.5",
     "vitest": "^1.6.0"
-  },
-  "dependencies": {
-    "just-clone": "^6.2.0",
-    "just-safe-get": "^4.2.0",
-    "just-safe-set": "^4.2.1"
   }
 }
