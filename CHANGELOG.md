@@ -1,5 +1,11 @@
 # flutate
 
+## 0.0.7
+
+### Patch Changes
+
+- add feature `record.update(path, () => someValue)`
+
 ## 0.0.6
 
 ### Patch Changes
