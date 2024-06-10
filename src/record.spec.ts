@@ -32,7 +32,7 @@ describe('FlutateRecord', () => {
     record = new FlutateRecord(source)
   })
 
-  describe('.update', () => {
+  describe('.update(path, value)', () => {
     describe('when specified direct property (.stringValue)', () => {
       beforeEach(() => {
         output = record.update('stringValue', 'updated').done()
@@ -60,34 +60,46 @@ describe('FlutateRecord', () => {
           expect(output.arrayValue).toStrictEqual([])
         })
       })
-      describe('and specified collection mutation', () => {
-        let mutation: Mock
-        let mutationCollection: CollectionPort<Item['arrayValue'][number]>
-
+      describe('and specified new value', () => {
         beforeEach(() => {
-          mutation = vi.fn((collection) => {
-            mutationCollection = collection
-            collection.add({ id: 10, value: 'new value' })
-            return collection
-          })
-          output = record.update('arrayValue', mutation).done()
+          output = record
+            .update('arrayValue', [{ id: 1, value: 'new value' }])
+            .done()
         })
-
-        it('should be call mutation', () => {
-          expect(mutation).toBeCalledTimes(1)
-        })
-        it('should be call mutation with Collection', () => {
-          expect(mutation).toBeCalledWith(mutationCollection)
-        })
-        it('should be modified property by collection', () => {
+        it('should be empty array', () => {
           expect(output.arrayValue).toStrictEqual([
-            { id: 1, value: 'item_1' },
-            { id: 2, value: 'item_2' },
-            { id: 3, value: 'item_3' },
-            { id: 10, value: 'new value' },
+            { id: 1, value: 'new value' },
           ])
         })
       })
+    })
+  })
+  describe('.update(path, (collection) => collection)', () => {
+    let mutation: Mock
+    let mutationCollection: CollectionPort<Item['arrayValue'][number]>
+
+    beforeEach(() => {
+      mutation = vi.fn((collection) => {
+        mutationCollection = collection
+        collection.add({ id: 10, value: 'new value' })
+        return collection
+      })
+      output = record.update('arrayValue', mutation).done()
+    })
+
+    it('should be call mutation', () => {
+      expect(mutation).toBeCalledTimes(1)
+    })
+    it('should be call mutation with Collection', () => {
+      expect(mutation).toBeCalledWith(mutationCollection)
+    })
+    it('should be modified property by collection', () => {
+      expect(output.arrayValue).toStrictEqual([
+        { id: 1, value: 'item_1' },
+        { id: 2, value: 'item_2' },
+        { id: 3, value: 'item_3' },
+        { id: 10, value: 'new value' },
+      ])
     })
   })
 
