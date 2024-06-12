@@ -1,5 +1,11 @@
 # flutate
 
+## 0.0.8
+
+### Patch Changes
+
+- feature collection.last
+
 ## 0.0.7
 
 ### Patch Changes
