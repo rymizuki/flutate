@@ -226,6 +226,11 @@ interface CollectionPort<T> {
   find<V extends IsObject<T, RecordPort<T>, T>>(
     condition: Partial<T>,
   ): V | undefined
+
+  /**
+   * Get record by last item
+   */
+  last<V extends IsObject<T, RecordPort<T>, T>>(): V | undefined
 }
 
 type MutateCollection<T> = (collection: CollectionPort<T>) => CollectionPort<T>

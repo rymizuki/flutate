@@ -454,6 +454,33 @@ describe('FlutateCollection', () => {
       })
     })
   })
+
+  describe('.last()', () => {
+    describe('when has some items', () => {
+      let output: RecordPort<Item> | undefined
+      beforeEach(() => {
+        collection = createCollection([
+          { id: 'id_1', name: 'test_1' },
+          { id: 'id_2', name: 'test_2' },
+          { id: 'id_3', name: 'test_3' },
+        ])
+        output = collection.last()
+      })
+
+      it('should be return last Record instance', () => {
+        expect(output).toBeInstanceOf(FlutateRecord)
+      })
+      it('should be return last item', () => {
+        expect(output?.done()).toStrictEqual({ id: 'id_3', name: 'test_3' })
+      })
+    })
+    describe('when has some items', () => {
+      it('should be return undefined', () => {
+        const collection = createCollection([])
+        expect(collection.last()).toBeUndefined()
+      })
+    })
+  })
 })
 
 function createCollection<T>(rows: T[]) {

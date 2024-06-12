@@ -1,4 +1,4 @@
-import { CollectionPort, MutateRecord, RecordPort } from './types'
+import { CollectionPort, IsObject, MutateRecord, RecordPort } from './types'
 
 type ConditionType<T> = number | Partial<T>
 
@@ -78,6 +78,14 @@ class Collection<T> implements CollectionPort<T> {
     const value = this.rows[index]
     if (value === undefined) return
     return typeof value === 'object' ? this.createRecord(value) : value
+  }
+
+  last<V extends IsObject<T, RecordPort<T>, T>>(): V | undefined {
+    if (!this.rows.length) return
+    const item = this.rows[this.rows.length - 1]
+    if (item === undefined) return
+    if (item === null) return
+    return typeof item === 'object' ? this.createRecord(item) : (item as any) // eslint-disable-line @typescript-eslint/no-explicit-any
   }
 
   private findIndex(condition: ConditionType<T>) {
